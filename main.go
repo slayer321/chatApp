@@ -80,7 +80,12 @@ func main() {
 
 	server := &Server{connections}
 
+	//Creating new Server
+
 	grpcServer := grpc.NewServer()
+
+	// Listening on Port 8080
+
 	listener, err := net.Listen("tcp", ":8080")
 
 	if err != nil {

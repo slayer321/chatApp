@@ -19,9 +19,13 @@ import (
 var client proto.BroadcastClient
 var wait *sync.WaitGroup
 
+// syn the channel using init function
+
 func init() {
 	wait = &sync.WaitGroup{}
 }
+
+// Connection the client with the open port
 
 func connect(user *proto.User) error {
 	var streamerror error
@@ -60,21 +64,31 @@ func main() {
 	flag.Parse()
 	//id := sha256.Sum256([]byte(timestamp.String() + *name))
 	id := name
+
+	//Listing on port 8080 over a Insecure medium
+
 	conn, err := grpc.Dial("localhost:8080", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("Couldnt connect to service: %v", err)
 	}
 
 	client = proto.NewBroadcastClient(conn)
+
+	// adding new Client
+
 	user := &proto.User{
 		Id: *id,
 		//Id:   hex.EncodeToString(id[:]),
 		Name: *name,
 	}
 
+	// Calling the Connect function
 	connect(user)
 
 	wait.Add(1)
+
+	// Chatting
+	// taking the user input from the user
 	go func() {
 		defer wait.Done()
 
